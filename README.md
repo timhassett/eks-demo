@@ -23,3 +23,9 @@ To debug run:
 ```
 docker run -it --entrypoint bash -v $(PWD):/src -v ~/.aws/credentials:/root/.aws/credentials -w /src devops-tools
 ```
+
+## Steps to destroy
+Run:
+```
+docker run -it -v $(PWD):/src -v ~/.aws/credentials:/root/.aws/credentials -w /src devops-tools terraform destroy
+```
