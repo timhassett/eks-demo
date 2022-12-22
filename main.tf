@@ -24,7 +24,7 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
   exec {
     api_version = "client.authentication.k8s.io/v1"
-    args        = ["eks", "get-token", "--cluster-name", module.eks.cluster_name]
+    args        = ["eks", "get-token", "--cluster-name", module.eks.cluster_name, "--profile", var.aws_profile, "--region", var.aws_region]
     command     = "aws"
   }
 }
@@ -34,7 +34,7 @@ provider "kubectl" {
   cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
   exec {
     api_version = "client.authentication.k8s.io/v1alpha1"
-    args        = ["eks", "get-token", "--cluster-name", module.eks.cluster_name]
+    args        = ["eks", "get-token", "--cluster-name", module.eks.cluster_name, "--profile", var.aws_profile, "--region", var.aws_region]
     command     = "aws"
   }
 }
@@ -47,7 +47,7 @@ provider "helm" {
     cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
     exec {
       api_version = "client.authentication.k8s.io/v1beta1"
-      args        = ["eks", "get-token", "--cluster-name", module.eks.cluster_name, "--profile", var.aws_profile]
+      args        = ["eks", "get-token", "--cluster-name", module.eks.cluster_name, "--profile", var.aws_profile,  "--region", var.aws_region]
       command     = "aws"
     }
   }
@@ -57,6 +57,6 @@ provider "helm" {
 
 resource "null_resource" "kube_config" {
   provisioner "local-exec" {
-    command = "aws eks update-kubeconfig --name ${module.eks.cluster_name} --region ${var.aws_region} --profile ${var.aws_profile}"
+    command = "aws eks update-kubeconfig --name ${module.eks.cluster_name} --profile ${var.aws_profile} --region ${var.aws_region}"
   }
 }
